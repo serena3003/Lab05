@@ -1,8 +1,11 @@
 package it.polito.tdp.anagrammi.controller;
 
 import java.net.URL;
+import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.Set;
 
+import it.polito.tdp.anagammi.DAO.AnagrammaDAO;
 import it.polito.tdp.anagrammi.model.AnagrammiModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,7 +40,21 @@ public class AnagrammiController {
 
     @FXML
     void doAnagramma(ActionEvent event) {
-
+    	
+    	String str = txtInsert.getText();
+    	Set<String> res = model.anagramma(str);
+    	
+    	AnagrammaDAO ad = new AnagrammaDAO();
+    	
+    	for(String s : res) {
+    		System.out.println(s + "\n");
+    		if(ad.isCorrect(s)) {
+    			txtCorretti.appendText(s + "\n");
+    		} else {
+    			txtErrati.appendText(s + "\n");
+    		}
+    	}
+    	
     }
 
     @FXML
@@ -45,7 +62,7 @@ public class AnagrammiController {
     	txtInsert.clear();
     	txtCorretti.clear();
     	txtErrati.clear();
-    	//cancella eventuali liste di risultato
+    	model.getRes().clear();
     }
 
     @FXML
